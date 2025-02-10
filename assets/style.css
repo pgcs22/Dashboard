@@ -1,0 +1,132 @@
+body {
+	margin: 0;
+	width: 100%;
+	height: 100vh;
+	font-family: "Exo", sans-serif;
+	color: #fff;
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab );
+	background-size: 400% 400%;
+	-webkit-animation: gradientBG 10s ease infinite;
+	        animation: gradientBG 10s ease infinite;
+}
+/* estilo.css */
+/*.container {
+    max-width: 1200px;  *//* Largura máxima do container *//*
+    max-height: 200px;
+    margin: 0 auto;     *//* Centraliza o container na página *//*
+    padding: 20px;      *//* Espaçamento interno *//*
+    border-radius: 10px; *//* Bordas arredondadas *//*
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); *//* Sombra *//*
+    font height: 900;
+}*/
+h1 {
+	font-weight: 900;
+}
+a {
+	text-decoration: none;
+	color: #212121;
+}
+@-webkit-keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+/* estilo.css */
+.titulo-personalizado {
+    font-family: 'Maven Pro';
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    line-height: 0.5;
+    padding: 10px 10px;
+    display: flex;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.valor-personalizado {
+    font-family: 'Maven Pro';
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+}
+
+.paragrafo-personalizado {
+    font-family: 'Maven Pro';
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.intra_pagina {
+    font-family: 'Maven Pro';
+    font-size: 40px;
+    color: #ffffff;
+    line-height: 1.0;
+    text-align: center;
+}
+
+.dropdown-transparente .Select-control {
+    background-color: transparent !important;
+    border: 1px solid #ccc !important;
+    color: black !important;
+    width: 150px !important;  /* Define a largura do dropdown */
+    marginLeft: auto;
+    marginRight: 20px;
+    left: 50px;
+}
+
+.dropdown-transparente .Select-menu-outer {
+    background-color: transparent !important;
+    border: 1px solid #ccc !important;
+    color: black !important;
+    width: 150px !important;  /* Define a largura do dropdown */
+    left: 50px;
+}
+
+
+.grafico {
+    background-color: transparent !important;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    backgroundColor: #ee7752;
+    padding: 10px;
+    zIndex: 1000;
+    height: 30px;
+ }
+
+ .card1{
+    position: fixed;
+    top: 35%;
+    left: 55%;
+    width: 40%;
+    height: 50%;
+    display: flex;
+ }
