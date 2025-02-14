@@ -28,9 +28,9 @@ app.layout = dbc.Container(
             children=[
                 dcc.Link('Home', href='/', style={'display': 'block', 'padding': '10px',
                                                   'textDecoration': 'none', 'color': '#333'}),
-                dcc.Link('Página 1', href='/Dashboard', style={'display': 'block', 'padding': '10px',
+                dcc.Link('Investimentos', href='/pagina2', style={'display': 'block', 'padding': '10px',
                                                                'textDecoration': 'none', 'color': '#333'}),
-                dcc.Link('Página 2', href='/pagina2', style={'display': 'block', 'padding': '10px',
+                dcc.Link('', href='/pagina3', style={'display': 'block', 'padding': '10px',
                                                              'textDecoration': 'none', 'color': '#333'})
             ],
             id="menu-column",
@@ -38,7 +38,7 @@ app.layout = dbc.Container(
             placement="start",  # Menu aparece à esquerda
             style={'width': '250px', 'backgroundColor': '#f8f9fa'}
         ),
-        html.Div(id='page-content', style={'marginTop': '60px'})
+        html.Div(id='page-content', style={'marginTop': '10px'})
     ]
 )
 
