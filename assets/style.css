@@ -130,3 +130,20 @@ a {
     height: 50%;
     display: flex;
  }
+
+/* Estilo da barra de rolagem para WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: lightblue;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Estilo da barra de rolagem para Firefox */
