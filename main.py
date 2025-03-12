@@ -1,11 +1,13 @@
 import dash
-from dash import dcc, html, Input, Output, State
+from dash import dcc, html, Input, Output
 from pages import inicio, pagina2
 import dash_bootstrap_components as dbc
+import data
 
 app = dash.Dash(__name__, suppress_callback_exceptions=True, use_pages=True,
                 external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
+
 
 app.layout = dbc.Container(
     fluid=True,
@@ -29,9 +31,9 @@ app.layout = dbc.Container(
                 dcc.Link('Home', href='/', style={'display': 'block', 'padding': '10px',
                                                   'textDecoration': 'none', 'color': '#333'}),
                 dcc.Link('Investimentos', href='/pagina2', style={'display': 'block', 'padding': '10px',
-                                                               'textDecoration': 'none', 'color': '#333'}),
+                                                                  'textDecoration': 'none', 'color': '#333'}),
                 dcc.Link('', href='/pagina3', style={'display': 'block', 'padding': '10px',
-                                                             'textDecoration': 'none', 'color': '#333'})
+                                                     'textDecoration': 'none', 'color': '#333'})
             ],
             id="menu-column",
             is_open=False,  # Menu inicialmente fechado
@@ -62,7 +64,6 @@ def display_pages(pathname):
         return inicio.layout
     elif pathname == '/pagina2':
         return pagina2.layout
-
     else:
         return '404 - Página não encontrada'
 

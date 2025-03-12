@@ -4,15 +4,14 @@ import plotly.graph_objects as go
 import pandas as pd
 import funcoes as fc
 import datetime as dt
+import data
 
 
-df_1 = pd.read_excel("banco de dados.xlsx", sheet_name="Banco de Dados")
-df_1['Movimentação']= df_1['Depósito'] - df_1['Retiradas']
-df_2 = pd.read_excel("banco de dados.xlsx")
+df_1 = data.df_1
+df_2 = data.df_2
+Saldo = data.Saldo
 data = dt.datetime(2024, 1, 3)
 nova_data = fc.mes_anterior(data)
-
-
 
 ultimo_dado = df_1['Data'].iloc[-1]
 Saldo = df_2['Saldo'].iloc[-1]
@@ -42,18 +41,18 @@ resultado_12_meses = resultado_12_meses-1
 resultado_inflacao_12_meses = resultado_inflacao_12_meses-1
 
 df_bancos = df_ultimo_mes.groupby("Banco")['Saldo'].sum().reset_index()
-df_risco = df_ultimo_mes.groupby("Tipo")['Saldo'].sum().reset_index()
+df_risco = df_ultimo_mes.groupby("Risco")['Saldo'].sum().reset_index()
 
 grafico_evolucao = go.Figure()
 grafico_evolucao.add_trace(go.Bar(
-            x=df_2['Mês'],
+            x=df_2['Data'],
             y=df_2['Saldo'],
             name='Saldo',  # Nome da série na legenda
-            marker_color='blue', # Cor das barras
+            marker_color='blue',  # Cor das barras
             yaxis='y1'
         ))
 grafico_evolucao.add_trace(go.Scatter(
-            x=df_2['Mês'],
+            x=df_2['Data'],
             y=df_2['Evolução'],
             name='Evolução',
             mode='lines',
@@ -61,7 +60,7 @@ grafico_evolucao.add_trace(go.Scatter(
             yaxis='y2'
         ))
 grafico_evolucao.add_trace(go.Scatter(
-            x=df_2['Mês'],
+            x=df_2['Data'],
             y=df_2['Inflação global'],
             name='Inflação Acumulada',
             mode='lines',
@@ -119,7 +118,7 @@ grafico_bancos.update_layout(
 
 grafico_risco = go.Figure()
 grafico_risco.add_pie(
-    labels=df_risco['Tipo'],
+    labels=df_risco['Risco'],
     values=df_risco['Saldo'],
     hole=0.5,
     textinfo='label+percent',
@@ -138,7 +137,7 @@ grafico_risco.update_layout(
 )
 
 layout = dbc.Container(
-fluid=True,  # Ocupa toda a largura disponível
+    fluid=True,  # Ocupa toda a largura disponível
     style={
         'overflowX': 'auto',  # Habilita a barra de rolagem horizontal
         'width': '100%',  # Largura total
@@ -148,38 +147,45 @@ fluid=True,  # Ocupa toda a largura disponível
         children=[dbc.Col(
             children=[dbc.Card(
                 children=[dbc.CardHeader('Inflação em 12 meses', className='paragrafo-personalizado'),
-                          dbc.CardBody(html.H4(f"R$ {resultado_inflacao_12_meses:.2%}", className='valor-personalizado'), className="d-flex justify-content-center")
+                          dbc.CardBody(html.H4(f"R$ {resultado_inflacao_12_meses:.2%}",
+                                               className='valor-personalizado'),
+                                       className="d-flex justify-content-center")
                           ],
                 color="transparent",  # Cor de fundo
                 inverse=True,  # Texto branco
                 outline=False,  # Sem borda
-            )],width=6, lg=3),
+            )], width=6, lg=3),
             dbc.Col(
                 children=[dbc.Card(
                     children=[dbc.CardHeader('Rendimento em 12 meses', className='paragrafo-personalizado'),
-                              dbc.CardBody(html.H4(f"{resultado_12_meses:.2%}", className='valor-personalizado'), className="d-flex justify-content-center")
+                              dbc.CardBody(html.H4(f"{resultado_12_meses:.2%}",
+                                                   className='valor-personalizado'),
+                                           className="d-flex justify-content-center")
                               ],
                     color="transparent",  # Cor de fundo
                     inverse=True,  # Texto branco
                     outline=False,  # Sem borda
-                )],width=6, lg=3),
+                )], width=6, lg=3),
             dbc.Col(
                 children=[dbc.Card(
                     children=[dbc.CardHeader('Último aporte', className='paragrafo-personalizado'),
-                              dbc.CardBody(html.H4(f"R$ {movimentacao_total:.2f}", className='valor-personalizado'), className="d-flex justify-content-center")
+                              dbc.CardBody(html.H4(f"R$ {movimentacao_total:.2f}",
+                                                   className='valor-personalizado'),
+                                           className="d-flex justify-content-center")
                               ],
                     color="transparent",  # Cor de fundo
                     inverse=True,  # Texto branco
                     outline=False,  # Sem borda
-                )],width=6, lg=3),
+                )], width=6, lg=3),
             dbc.Col(children=[dbc.Card(
-                    children=[dbc.CardHeader('Saldo dos Investimentos', className='paragrafo-personalizado'),
-                          dbc.CardBody(html.H4(f"R$ {Saldo:.2f}", className='valor-personalizado'), className="d-flex justify-content-center")
+                children=[dbc.CardHeader('Saldo dos Investimentos', className='paragrafo-personalizado'),
+                          dbc.CardBody(html.H4(f"R$ {Saldo:.2f}", className='valor-personalizado'),
+                                       className="d-flex justify-content-center")
                           ],
-                    color="transparent",  # Cor de fundo
-                    inverse=True,  # Texto branco
-                    outline=False,  # Sem borda
-                )],width=6, lg=3)
+                color="transparent",  # Cor de fundo
+                inverse=True,  # Texto branco
+                outline=False,  # Sem borda
+            )], width=6, lg=3)
         ], style={"margin-bottom": "20px"}  # Adiciona margem abaixo da linha
     ),
         dbc.Row(children=[
@@ -190,7 +196,8 @@ fluid=True,  # Ocupa toda a largura disponível
                         dbc.CardBody(
                             children=[
                                 dbc.Col(
-                                    dcc.Graph(id='grafico1', figure=grafico_evolucao, style={"margin-top": "0",'width':'100%','height':'42vh'})
+                                    dcc.Graph(id='grafico1', figure=grafico_evolucao,
+                                              style={"margin-top": "0", 'width': '100%', 'height': '42vh'})
                                 )
                             ], className="card-body-left"
                         )
@@ -206,7 +213,7 @@ fluid=True,  # Ocupa toda a largura disponível
                             dbc.CardHeader('Bancos', className='paragrafo-personalizado'),
                             dbc.CardBody(
                                 children=[
-                                    dbc.Col(dcc.Graph(id='grafico2', figure=grafico_bancos, style={'height':'42vh'})
+                                    dbc.Col(dcc.Graph(id='grafico2', figure=grafico_bancos, style={'height': '42vh'})
                                             )
                                 ]
                             )
@@ -222,7 +229,7 @@ fluid=True,  # Ocupa toda a largura disponível
                             dbc.CardHeader('Risco', className='paragrafo-personalizado'),
                             dbc.CardBody(
                                 children=[
-                                    dbc.Col(dcc.Graph(id='grafico3', figure=grafico_risco, style={'height':'42vh'})
+                                    dbc.Col(dcc.Graph(id='grafico3', figure=grafico_risco, style={'height': '42vh'})
                                             )
                                 ]
                             )
