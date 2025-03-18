@@ -91,7 +91,7 @@ a {
 .dropdown-transparente .Select-control {
     background-color: transparent !important;
     border: 1px solid #ccc !important;
-    color: black !important;
+    color: white !important;
     width: 150px !important;  /* Define a largura do dropdown */
     marginLeft: auto;
     marginRight: 20px;
@@ -101,7 +101,7 @@ a {
 .dropdown-transparente .Select-menu-outer {
     background-color: transparent !important;
     border: 1px solid #ccc !important;
-    color: black !important;
+    color: white !important;
     width: 150px !important;  /* Define a largura do dropdown */
     left: 50px;
 }
@@ -146,4 +146,31 @@ a {
     background-color: transparent;
 }
 
-/* Estilo da barra de rolagem para Firefox */
+.custom-table th,
+.custom-table td {
+    border-left: none !important;
+    border-right: none !important;
+    text-align: center !important;
+}
+
+.custom-table {
+    background-color: transparent !important;
+    font-family: 'Candal', sans-serif !important;
+}
+
+.intra-tabela{
+    background-color: transparent !important;
+    font-family: 'Candal', sans-serif !important;
+    color: white !important;
+    border: none !important;  /* Remove as bordas internas */
+}
+
+.intra-header{
+    position: sticky;
+    vertical-align: top !important.;
+    top: 0!important;
+    background-color: transparent !important;
+    font-family: 'Candal', sans-serif !important;
+    color: white !important;
+    border: none !important;  /* Remove as bordas internas */
+}

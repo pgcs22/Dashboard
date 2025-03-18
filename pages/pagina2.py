@@ -6,15 +6,28 @@ import datetime as dt
 from dash import html, dcc
 import data
 
-df_1 = data.df_1.copy()  # Se precisar modificar o DataFrame sem afetar os outros
+df_1 = data.df_Dados.copy()  # Se precisar modificar o DataFrame sem afetar os outros
 ultimo_mes = df_1['Data'].max()
 dropdown_options = list(df_1['Investimento'].unique())
 
 df_acumulado = data.df_3[data.df_3['Data'] == ultimo_mes].copy()
 df_acumulado = df_acumulado.sort_values(by=['Acumulado 12 Meses'], ascending=False)
 df_12meses = df_acumulado[['Banco', 'Investimento', 'Acumulado 12 Meses']].copy()  # Criando cópia
+tabela_riscos = data.tabela_de_riscos
+tabela_riscos_ano = data.tabela_de_riscos_ano
 
 df_12meses['Acumulado 12 Meses'] = df_12meses['Acumulado 12 Meses'].apply(lambda x: f'{x:.2%}')
+tabela_riscos['Rendimento'] = tabela_riscos['Rendimento'].apply(lambda x: f'{x:.2%}')
+tabela_riscos[['Saldo', 'Investido', 'Ganhos']] = \
+    tabela_riscos[['Saldo', 'Investido', 'Ganhos']].map(
+        lambda x: f'R$ {x:.2f}' if pd.notnull(x) else 'R$0.00'
+    )
+
+tabela_riscos_ano['Rendimento'] = tabela_riscos_ano['Rendimento'].apply(lambda x: f'{x:.2%}')
+tabela_riscos_ano[['Saldo', 'Investido', 'Ganhos']] = \
+    tabela_riscos_ano[['Saldo', 'Investido', 'Ganhos']].map(
+        lambda x: f'R$ {x:.2f}' if pd.notnull(x) else 'R$0.00'
+    )
 
 fig=go.Figure()
 
@@ -49,7 +62,7 @@ layout = dbc.Container(
                                       responsive=True,  # Torna a tabela responsiva
                                       striped=False,   # Adiciona listras às linhas
                                       style={'background-color': 'transparent', 'font-family': 'Candal', 'color': 'black'}
-                                      ), className='custom-table'
+                                  ), className='custom-table'
                               )
                           )
                           ],
@@ -85,11 +98,11 @@ layout = dbc.Container(
                         className="d-flex align-items-center",  # Alinha o conteúdo do CardHeader verticalmente ao centro
                     ),
                         dbc.CardBody(
-                                    dcc.Graph(id='grafico1', figure=fig,
-                                              style={"margin-top": "0", 'width': '100%', 'height': '42vh',
-                                                     'background-color': 'transparent'}),
-                                    style={'background-color': 'transparent'}
-                                )
+                            dcc.Graph(id='grafico1', figure=fig,
+                                      style={"margin-top": "0", 'width': '100%', 'height': '42vh',
+                                             'background-color': 'transparent'}),
+                            style={'background-color': 'transparent'}
+                        )
 
                     ],
                     color="transparent",  # Cor de fundo
@@ -105,13 +118,28 @@ layout = dbc.Container(
             dbc.Col(
                 dbc.Card(
                     children=[
-                        dbc.CardHeader('', className='paragrafo-personalizado'),
+                        dbc.CardHeader('Análise de Riscos no Mês', className='paragrafo-personalizado'),
                         dbc.CardBody(
-                            children=[
-                                dbc.Col(
-
-                                )
-                            ], className="card-body-left"
+                            html.Div(
+                                dbc.Table(
+                                    id='Tabela2',
+                                    children=[
+                                        html.Thead(  # Cabeçalho da tabela
+                                            html.Tr([html.Th(col, className='intra-header')
+                                                     for col in tabela_riscos.columns])
+                                        ),
+                                        html.Tbody(  # Corpo da tabela
+                                            [html.Tr([html.Td(tabela_riscos.iloc[i][col], className='intra-tabela')
+                                                      for col in tabela_riscos.columns]) for i in range(len(tabela_riscos))]
+                                        )
+                                    ],
+                                    bordered=False,  # Adiciona bordas à tabela
+                                    hover=True,     # Habilita o efeito de hover
+                                    responsive=True,  # Torna a tabela responsiva
+                                    striped=False,   # Adiciona listras às linhas
+                                    style={'background-color': 'transparent', 'font-family': 'Candal', 'color': 'black'}
+                                ), className='custom-table'
+                            )
                         )
                     ],
                     color="transparent",  # Cor de fundo
@@ -120,39 +148,39 @@ layout = dbc.Container(
                 ), width=12, lg=6, md=6, sm=12
             ),
             dbc.Col(
-                    dbc.Card(
-                        children=[
-                            dbc.CardHeader('', className='paragrafo-personalizado'),
-                            dbc.CardBody(
-                                children=[
-                                    dbc.Col(
-
-                                    )
-                                ]
-                            )
-                        ],
-                        color="transparent",  # Cor de fundo
-                        inverse=True,  # Texto branco
-                        outline=False,  # Sem borda
-                    ), width=6, lg=3, md=3, sm=6
-            ),
-            dbc.Col(
                 dbc.Card(
-                        children=[
-                            dbc.CardHeader('', className='paragrafo-personalizado'),
-                            dbc.CardBody(
-                                children=[
-                                    dbc.Col(
-                                            )
-                                ]
+                    children=[
+                        dbc.CardHeader('Análise de Riscos no Ano', className='paragrafo-personalizado'),
+                        dbc.CardBody(
+                            html.Div(
+                                dbc.Table(
+                                    id='Tabela3',
+                                    children=[
+                                        html.Thead(  # Cabeçalho da tabela
+                                            html.Tr([html.Th(col, className='intra-header')
+                                                     for col in tabela_riscos_ano.columns])
+                                        ),
+                                        html.Tbody(  # Corpo da tabela
+                                            [html.Tr([html.Td(tabela_riscos_ano.iloc[i][col], className='intra-tabela')
+                                                      for col in tabela_riscos_ano.columns]) for i in range(len(tabela_riscos))]
+                                        )
+                                    ],
+                                    bordered=False,  # Adiciona bordas à tabela
+                                    hover=True,     # Habilita o efeito de hover
+                                    responsive=True,  # Torna a tabela responsiva
+                                    striped=False,   # Adiciona listras às linhas
+                                    style={'background-color': 'transparent', 'font-family': 'Candal', 'color': 'black'}
+                                ), className='custom-table'
                             )
-                        ],
-                        color="transparent",  # Cor de fundo
-                        inverse=True,  # Texto branco
-                        outline=False,  # Sem borda
-                    ), width=6, lg=3, md=3, sm=6),
-             ]),
-        ],
+                        )
+                    ],
+                    color="transparent",  # Cor de fundo
+                    inverse=True,  # Texto branco
+                    outline=False,  # Sem borda
+                ), width=12, lg=6, md=6, sm=12
+            ),
+        ]),
+    ],
 
 )
 
